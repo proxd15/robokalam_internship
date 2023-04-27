@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Instructional Video Template</title>
+  <style>
+    /* Define the grid layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      grid-gap: 20px;
+      padding: 20px;
+    }
+
+    /* Style the video containers */
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* Set the aspect ratio (16:9) */
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-container iframe, .video-container video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Style the emotional status icon */
+    .emotional-status {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .emotional-status .icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .emotional-status .icon.smile {
+      background-color: #00c853;
+    }
+
+    .emotional-status .icon.sad {
+      background-color: #ff1744;
+    }
+
+    .emotional-status .icon.neutral {
+      background-color: #bdbdbd;
+    }
+
+    /* Style the heading */
+    h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+    <h1 style="text-align: center;">WEB APPLICATION FOR LIVE STREAMING</h1>
+  <div class="grid-container">
+    <div class="instructional-video">
+      <h2>Instructional Video</h2>
+      <div class="video-container">
+        <iframe src="https://youtu.be/55OfSZ1EU2A"></iframe>
+      </div>
+    </div>
+    <div class="student-video">
+      <h2>Student Video</h2>
+      <div class="video-container">
+        <video id="student-video" autoplay></video>
+      </div>
+    </div>
+    <div class="emotional-status">
+        <h2 style="color: black;">Emotional Status</h2>
+      <div class="icon"></div>
+    </div>
+  </div>
+
+  <script>
+    // Get the video elements
+    const instructionalVideo = document.querySelector('.instructional-video iframe');
+    const studentVideo = document.querySelector('#student-video');
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    // Set up the face detection model
+    const faceDetector = new window.FaceDetector();
+
+    // Load the instructional video
+    instructionalVideo.src = 'https://youtu.be/55OfSZ1EU2A';
+
+    // Start the
+    navigator.mediaDevices.getUserMedia({video: true})
+.then(stream => {
+studentVideo.srcObject = stream;
+})
+.catch(err => {
+console.error('Error accessing camera', err);
+});
+
+// Capture a frame from the student video every second and detect faces
+setInterval(() => {
+  // Draw the current frame onto the canvas
+  context.drawImage(studentVideo, 0, 0, canvas.width, canvas.height);
+
+  // Detect faces in the canvas image
+  faceDetector.detect(canvas)
+    .then(faces => {
+      // Set the emotional status icon based on the detected emotions
+      const emotionalStatus = document.querySelector('.emotional-status .icon');
+      if (faces.length > 0) {
+        const emotions = faces[0].expressions;
+        if (emotions.happy > 0.5) {
+          emotionalStatus.className = 'icon smile';
+        } else if (emotions.sad > 0.5) {
+          emotionalStatus.className = 'icon sad';
+        } else {
+          emotionalStatus.className = 'icon neutral';
+        }
+      } else {
+        emotionalStatus.className = 'icon neutral';
+      }
+    })
+    .catch(err => {
+      console.error('Error detecting faces', err);
+    });
+}, 1000);
+</script>
+</body>
+</html>
