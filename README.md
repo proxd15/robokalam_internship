@@ -14,9 +14,9 @@ After downloading the zip file from github , these steps must be followed to run
 5. Now in terminal , type the command - python manage.py runserver
 6. The development server will start.
 7. For ex . "http://127.0.0.1:8000/" -- this type of url you will see in terminal , open that url.
-8. On the homepage - the web tenplate will appear - Live Streaming Web Application , no backend is included as not mentioned in the details.
+8. On the homepage - the web template will appear - Live Streaming Web Application , no backend is included as not mentioned in the details.
 9. Now for the second project - create a form with database , change the url to "http://127.0.0.1:8000/form/formdb".
-10. The desired form will appear , enter the details and the appliaction will save the data in database. 
+10. The desired form will appear , enter the details and the application will save the data in database. 
 
 NOTE : To access the database : http://127.0.0.1:8000/admin after the development server starts
        Username : sagar
